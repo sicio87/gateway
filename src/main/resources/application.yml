@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: toDoListModule
+          uri: http://to-do-list-service:9001/
+          predicates:
+            - Path=/tasks/**
