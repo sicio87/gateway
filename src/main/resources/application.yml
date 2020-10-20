@@ -3,6 +3,6 @@ spring:
     gateway:
       routes:
         - id: toDoListModule
-          uri: http://to-do-list-service:9001/
+          uri: http://to-do-list-service:10000/
           predicates:
             - Path=/tasks/**
