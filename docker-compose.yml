@@ -5,7 +5,7 @@ services:
     volumes:
       - ./build/libs:/app
     ports:
-      - "8080:8080"
+      - "8090:8090"
     environment:
       JAVA_TOOL_OPTIONS: "
         -Dspring.profiles.active=dev

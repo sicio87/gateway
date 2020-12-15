@@ -1,8 +1,40 @@
 spring:
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
       routes:
         - id: toDoListModule
-          uri: http://to-do-list-service:10000/
+          uri: http://to-do-list-service:10000
           predicates:
             - Path=/tasks/**
+          filters:
+            - RemoveRequestHeader=Cookie
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            token-uri: http://keycloak:8080/auth/realms/app-realm/protocol/openid-connect/token
+            authorization-uri: http://keycloak:8080/auth/realms/app-realm/protocol/openid-connect/auth
+            userinfo-uri: http://keycloak:8080/auth/realms/app-realm/protocol/openid-connect/userinfo
+            user-name-attribute: preferred_username
+#            jwk-set-uri: http://keycloak:8080/auth/realms/app-realm/protocol/openid-connect/certs
+        registration:
+          keycloak:
+            client-id: springboot-microservice
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+#            scope:
+#              - openid
+#              - profile
+#              - email
+
+logging:
+  level:
+    org.springframework:
+      cloud.gateway: DEBUG
+      security: DEBUG
+      web.reactive: TRACE
+      http.server.reactive: DEBUG
